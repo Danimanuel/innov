@@ -1,0 +1,70 @@
+.sign{
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.fm{
+    color: white;
+   
+    width: 400px;
+    height: 600px;
+    box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.5);
+    backdrop-filter: blur(100px);
+    border-radius: 20px;
+    padding: 40px;
+    
+}
+
+.fm h2{
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.fm input{  
+  
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: none;
+    border-radius: 5px;
+    
+}
+
+.fm fieldset{
+    display: flex;
+    justify-content: space-around;
+}
+.btn{
+    width: 200px;
+    padding: 20px;
+    border: none;
+    border-radius: 5px;
+    background: linear-gradient(270deg, rgb(21, 21, 131), rgb(87, 87, 236), rgb(21, 21, 131));
+    background-size: 400% 400%;
+    animation: gradientMove 4s ease infinite;
+    text-align: center;
+    color: white;
+    cursor: pointer;
+    margin-left: 100px;
+    margin-right: auto;
+}
+
+/* Animação */
+@keyframes gradientMove {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+
+footer{
+    margin-top: 50px;
+}

@@ -1,0 +1,73 @@
+*{
+    margin: 0;
+    padding: 0
+}
+
+.layout{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #2379D5;
+}
+
+.inform{
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+   
+    
+}
+.inform h2{
+    text-align: center;
+    margin-bottom: 20px;
+}
+.inform label{
+    display: block;
+    margin-bottom: 2px;
+    font-weight: bold;
+}
+.inform fieldset{
+    border: 1px solid #1e08e0;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+
+.inform fieldset legend{
+    padding: 0 10px;
+    font-weight: bold;
+    color: #1e08e0;
+}
+.inform input{
+    width: 90%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+button{
+    width: 100%;
+    padding: 10px;
+   background: linear-gradient(270deg, rgb(21, 21, 131), rgb(87, 87, 236), rgb(21, 21, 131));
+    background-size: 400% 400%;
+    animation: gradientMove 4s ease infinite;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+@keyframes gradientMove {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}

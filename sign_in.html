@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="estilo/style.css">
+    <link rel="stylesheet" href="estilo/signin.css">
+    <title>Sign in</title>
+</head>
+
+<body>
+    <div class="interface">
+        
+        <div class="sign"> 
+            <section class="fm">
+                <h2>Sign in</h2>
+                <form action="php/saved.php" method="post">
+                    <label for="user">Fullname</label> <br>
+                    <input type="text" name="fullname" id="user" required> <br>
+                    <label for="email">Emai:</label> <br>
+                    <input type="email" name="email" id="email" required> <br>
+                    <label for="date">Date of Birth</label>
+                    <br>
+                    <input type="date" name="birthday" id="date"><br>
+                    <fieldset>
+                        <legend>Gender</legend>
+                        <input type="radio" name="gender" id="male" value="male" required>
+                        <label for="male">Male</label>
+                        <input type="radio" name="gender" id="female" value="female" required>
+                        <label for="female">Female</label>
+                    </fieldset>
+                    <label for="password">Password</label><br>
+                    <input type="password" name="pass" id="password" required>
+                    <br>
+                    <label for="pass">Confirm your Password</label><br>
+                    <input type="password" name="confirm_password" id="pass" required>
+                    <button type="submit" class="btn">Cadastrar</button>
+                </form>
+            </section>
+        </div>
+         <footer>
+                <p>&copy; innov. Todos os direitos reservados.</p>
+            </footer>
+    </div>
+</body>
+
+</html>
