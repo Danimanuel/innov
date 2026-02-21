@@ -13,7 +13,7 @@
             <p>Preencha as informações acadêmicas abaixo:</p>
 
             <?php
-            $id_usuario = $_GET['id_usuario'];
+            $id_usuario = $_GET['id'];
 
             ?>
             <form action="saved_addinfo.php" method="post">

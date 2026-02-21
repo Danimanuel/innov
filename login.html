@@ -11,18 +11,52 @@
     <div class="bg">
         <div class="drop">
             <section>
-                <form action="login.php" method="post">
+                <form  id="loginForm" method="post">
                     <h1>Login</h1>
         
-                    <input type="email" id="username" name="username" required placeholder="Email"><br><br>
+                    <input type="email" id="username" name="email" required placeholder="Email"><br><br>
         
-                    <input type="password" id="password" name="password" required placeholder="Password"><br><br>
+                    <input type="password" id="password" name="pass" required placeholder="Password"><br><br>
+                     <div id="mensagem"></div><br>
                     <p class="line"><a href="###">Lembrar-me</a></p> <p class="line"><a href="###" id="forget">Esqueci a palavra-passe</a></p> <br>
                     <button type="submit" value="Login">Login</button>
                     <p class="acount">Não tem conta? <a href="sign_in.html">Criar Conta.</a></p>
                 </form>
-            </section>
-           
+               
+
+             </section>
+              <div id="mensagem"></div>
+            <script>
+        const form = document.getElementById("loginForm");
+        const mensagemDiv = document.getElementById("mensagem");
+
+        form.addEventListener("submit", function(e) {
+            e.preventDefault();
+            const formData = new FormData(form);
+
+            fetch("php/login.php", {
+                method: "POST",
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if(data.sucesso){
+                    mensagemDiv.innerHTML = "<p style='color:green;'>"+data.mensagem+"</p>";
+                    // Redireciona para a página protegida
+                    setTimeout(() => {
+                        window.location.href = "php/addinfo.php?id=" + data.id_usuario;
+                    }, 1000);
+                } else {
+                    mensagemDiv.innerHTML = "<p style='color:red;'>"+data.mensagem+"</p>";
+                }
+            })
+            .catch(err => {
+                mensagemDiv.innerHTML = "<p style='color:red;'>Erro no servidor.</p>";
+                console.log(err);
+            });
+        });
+    </script>
+          
         </div>
          <footer>
                 <p>&copy; innov. Todos os direitos reservados.</p>

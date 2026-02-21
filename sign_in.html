@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,67 +9,93 @@
 </head>
 
 <body>
-    <div class="interface">
+<div class="interface">
 
-        <div class="sign">
-            <section class="fm">
-                <h2>Sign in</h2>
-                <form id="formCadastro" action="php/saved.php" method="post">
-                    <label for="user">Fullname</label> <br>
-                    <input type="text" name="fullname" id="user" required> <br>
-                    <label for="email">Emai:</label> <br>
-                    <input type="email" name="email" id="email" required> <br>
-                    <label for="date">Date of Birth</label>
-                    <br>
-                    <input type="date" name="birthday" id="date"><br>
-                    <fieldset>
-                        <legend>Gender</legend>
-                        <input type="radio" name="gender" id="male" value="male" required>
-                        <label for="male">Male</label>
-                        <input type="radio" name="gender" id="female" value="female" required>
-                        <label for="female">Female</label>
-                    </fieldset>
-                    <label for="password">Password</label><br>
-                    <input type="password" name="pass" id="password" required>
-                    <br>
-                    <label for="pass">Confirm your Password</label><br>
-                    <input type="password" name="confirm_password" id="pass" required>
-                    <button type="submit" class="btn">Cadastrar</button>
-                </form>
+    <div class="sign">
+        <section class="fm">
+            <h2>Sign in</h2>
 
-                <div id="mensagem"></div>
+        
+            <form id="formCadastro">
 
-                <script>
-                    // Vamos usar AJAX para enviar o formulário e receber a mensagem
-                    const form = document.getElementById("formCadastro");
-                    const mensagemDiv = document.getElementById("mensagem");
+                <label>Fullname</label><br>
+                <input type="text" name="fullname" required><br>
 
-                    form.addEventListener("submit", function (e) {
-                        e.preventDefault(); // evita recarregar a página
+                <label>Email:</label><br>
+                <input type="email" name="email" required><br>
 
-                        const formData = new FormData(form);
+                <label>Date of Birth</label><br>
+                <input type="date" name="birthday"><br>
 
-                        fetch("php/saved.php", {
-                            method: "POST",
-                            body: formData
-                        })
-                            .then(response => response.json())
-                            .then(data => {
-                                mensagemDiv.innerHTML = data.mensagem; // mostra a mensagem
-                                if (data.sucesso) {
-                                    // se cadastro OK, redireciona para info-adicional
-                                    window.location.href = "saved_addinfo.php?id=" + data.id_usuario;
-                                }
-                            })
-                            .catch(err => console.log(err));
-                    });
-                </script>
-            </section>
-        </div>
-        <footer>
-            <p>&copy; innov. Todos os direitos reservados.</p>
-        </footer>
+                <fieldset>
+                    <legend>Gender</legend>
+                    <input type="radio" name="gender" value="male" required> Male
+                    <input type="radio" name="gender" value="female" required> Female
+                </fieldset>
+
+                <label>Password</label><br>
+                <input type="password" name="pass" required><br>
+
+                <label>Confirm your Password</label><br>
+                <input type="password" name="confirm_password" required><br>
+                 <div id="mensagem"></div>
+                <button type="submit" class="btn">Cadastrar</button>
+            </form>
+
+           
+
+        </section>
     </div>
-</body>
 
+    <footer>
+        <p>&copy; innov. Todos os direitos reservados.</p>
+    </footer>
+
+</div>
+
+<script>
+const form = document.getElementById("formCadastro");
+const mensagemDiv = document.getElementById("mensagem");
+
+form.addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    const formData = new FormData(form);
+
+    const pass = formData.get("pass");
+    const confirm = formData.get("confirm_password");
+
+    if (pass !== confirm) {
+        mensagemDiv.innerHTML = "<p style='color:red;'>As senhas não coincidem!</p>";
+        return;
+    }
+
+    fetch("php/saved.php", {
+        method: "POST",
+        body: formData
+    })
+    .then(response => {
+        return response.json();   
+    })
+    .then(data => {
+
+        if (data.sucesso) {
+            mensagemDiv.innerHTML = "<p style='color:green;'>" + data.mensagem + "</p>";
+
+            setTimeout(() => {
+                window.location.href = "php/addinfo.php?id=" + data.id_usuario;
+            }, 1000);
+
+        } else {
+            mensagemDiv.innerHTML = "<p style='color:red;'>" + data.mensagem + "</p>";
+        }
+
+    })
+    .catch(error => {
+        console.log("Erro real:", error);
+        mensagemDiv.innerHTML = "<p style='color:red;'>Erro no servidor.</p>";
+    });
+});
+</script>
+</body>
 </html>

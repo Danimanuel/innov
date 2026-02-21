@@ -8,7 +8,7 @@ $want = $_POST['want'];
 $level = $_POST['leve'];
 // Prepared Statement
 
-$stmt = $conn->prepare ( "INSERT INTO addinfo (id_usuario, curso, camp, want, leve) VALUES (?, ?, ?, ?, ?)");
+$stmt = $conn->prepare ( "INSERT INTO addinfo (id_usuario, curso, area_estudo, profissional, nivel_acad) VALUES (?, ?, ?, ?, ?)");
 $stmt->bind_param("issss", $id_usuario, $curso, $camp, $want, $level);
 
 if($stmt->execute()){

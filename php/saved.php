@@ -1,30 +1,72 @@
 <?php
+header('Content-Type: application/json');
+
+error_reporting(E_ALL);
+ini_set('display_errors', 0);
+
 include "conection.php";
 
-$response = ["sucesso" => false, "mensagem" => "", "id_usuario" => 0];
+$response = [
+    "sucesso" => false,
+    "mensagem" => "",
+    "id_usuario" => 0
+];
 
-$nome = $_POST['nome'] ?? '';
+// Verifica se os dados chegaram
+if ($_SERVER["REQUEST_METHOD"] !== "POST") {
+    $response["mensagem"] = "Método inválido.";
+    echo json_encode($response);
+    exit;
+}
+
+$nome = $_POST['fullname'] ?? '';
 $email = $_POST['email'] ?? '';
-$date_birth_day = $_POST['date_birth_day'] ?? '';
-$genero = $_POST['genero'] ?? '';
-$palavra_passe = password_hash($_POST['palavra_passe'] ?? '', PASSWORD_DEFAULT);
+$date_birth_day = $_POST['birthday'] ?? '';
+$genero = $_POST['gender'] ?? '';
+$pass = $_POST['pass'] ?? '';
+
+if (empty($nome) || empty($email) || empty($pass)) {
+    $response["mensagem"] = "Preencha todos os campos obrigatórios.";
+    echo json_encode($response);
+    exit;
+}
+
+$palavra_passe = password_hash($pass, PASSWORD_DEFAULT);
 
 // Verifica se email já existe
 $sql_check = "SELECT id_usuario FROM usuario WHERE email = ?";
 $stmt_check = $conn->prepare($sql_check);
+
+if (!$stmt_check) {
+    $response["mensagem"] = "Erro no prepare (check): " . $conn->error;
+    echo json_encode($response);
+    exit;
+}
+
 $stmt_check->bind_param("s", $email);
 $stmt_check->execute();
 $result = $stmt_check->get_result();
 
-if($result->num_rows > 0){
+if ($result->num_rows > 0) {
+
     $response['mensagem'] = "Este email já está cadastrado!";
+
 } else {
+
     $sql = "INSERT INTO usuario (nome, email, date_birth_day, genero, palavra_passe)
             VALUES (?, ?, ?, ?, ?)";
+
     $stmt = $conn->prepare($sql);
+
+    if (!$stmt) {
+        $response["mensagem"] = "Erro no prepare (insert): " . $conn->error;
+        echo json_encode($response);
+        exit;
+    }
+
     $stmt->bind_param("sssss", $nome, $email, $date_birth_day, $genero, $palavra_passe);
 
-    if($stmt->execute()){
+    if ($stmt->execute()) {
         $response['sucesso'] = true;
         $response['id_usuario'] = $stmt->insert_id;
         $response['mensagem'] = "Cadastro realizado com sucesso!";
@@ -33,6 +75,6 @@ if($result->num_rows > 0){
     }
 }
 
-header('Content-Type: application/json');
 echo json_encode($response);
+exit;
 ?>
