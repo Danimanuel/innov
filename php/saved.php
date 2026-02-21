@@ -1,25 +1,38 @@
 <?php
-include 'conection.php';
+include "conection.php";
 
-$nome = $_POST['fullname'];
-$email = $_POST['email'];
-$birth = $_POST['birthday'];
-$gender = $_POST['gender'];
-$password = $_POST['pass'];
+$response = ["sucesso" => false, "mensagem" => "", "id_usuario" => 0];
 
-// Criptografar senha
-$passwordHash = password_hash($password, PASSWORD_DEFAULT);
+$nome = $_POST['nome'] ?? '';
+$email = $_POST['email'] ?? '';
+$date_birth_day = $_POST['date_birth_day'] ?? '';
+$genero = $_POST['genero'] ?? '';
+$palavra_passe = password_hash($_POST['palavra_passe'] ?? '', PASSWORD_DEFAULT);
 
-// Prepared Statement
-$stmt = $conn->prepare ( "INSERT INTO usuario (nome, email, date_birth_day, genero, palavra_passe) VALUES (?, ?, ?, ?, ?)");
-$stmt->bind_param("sssss", $nome, $email, $birth, $gender, $passwordHash);
+// Verifica se email já existe
+$sql_check = "SELECT id_usuario FROM usuario WHERE email = ?";
+$stmt_check = $conn->prepare($sql_check);
+$stmt_check->bind_param("s", $email);
+$stmt_check->execute();
+$result = $stmt_check->get_result();
 
-if($stmt->execute()){
-    echo "New record created successfully";
+if($result->num_rows > 0){
+    $response['mensagem'] = "Este email já está cadastrado!";
 } else {
-    echo "Error: " . $stmt->error;
+    $sql = "INSERT INTO usuario (nome, email, date_birth_day, genero, palavra_passe)
+            VALUES (?, ?, ?, ?, ?)";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("sssss", $nome, $email, $date_birth_day, $genero, $palavra_passe);
+
+    if($stmt->execute()){
+        $response['sucesso'] = true;
+        $response['id_usuario'] = $stmt->insert_id;
+        $response['mensagem'] = "Cadastro realizado com sucesso!";
+    } else {
+        $response['mensagem'] = "Erro ao cadastrar: " . $stmt->error;
+    }
 }
 
-$stmt->close();
-$conn->close();
+header('Content-Type: application/json');
+echo json_encode($response);
 ?>

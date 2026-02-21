@@ -11,11 +11,11 @@
 
 <body>
     <div class="interface">
-        
-        <div class="sign"> 
+
+        <div class="sign">
             <section class="fm">
                 <h2>Sign in</h2>
-                <form action="php/saved.php" method="post">
+                <form id="formCadastro" action="php/saved.php" method="post">
                     <label for="user">Fullname</label> <br>
                     <input type="text" name="fullname" id="user" required> <br>
                     <label for="email">Emai:</label> <br>
@@ -37,11 +37,39 @@
                     <input type="password" name="confirm_password" id="pass" required>
                     <button type="submit" class="btn">Cadastrar</button>
                 </form>
+
+                <div id="mensagem"></div>
+
+                <script>
+                    // Vamos usar AJAX para enviar o formulário e receber a mensagem
+                    const form = document.getElementById("formCadastro");
+                    const mensagemDiv = document.getElementById("mensagem");
+
+                    form.addEventListener("submit", function (e) {
+                        e.preventDefault(); // evita recarregar a página
+
+                        const formData = new FormData(form);
+
+                        fetch("php/saved.php", {
+                            method: "POST",
+                            body: formData
+                        })
+                            .then(response => response.json())
+                            .then(data => {
+                                mensagemDiv.innerHTML = data.mensagem; // mostra a mensagem
+                                if (data.sucesso) {
+                                    // se cadastro OK, redireciona para info-adicional
+                                    window.location.href = "saved_addinfo.php?id=" + data.id_usuario;
+                                }
+                            })
+                            .catch(err => console.log(err));
+                    });
+                </script>
             </section>
         </div>
-         <footer>
-                <p>&copy; innov. Todos os direitos reservados.</p>
-            </footer>
+        <footer>
+            <p>&copy; innov. Todos os direitos reservados.</p>
+        </footer>
     </div>
 </body>
 
