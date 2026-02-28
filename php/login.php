@@ -46,6 +46,13 @@ if($result->num_rows === 0){
     }
 }
 
+/*if($stmt->execute()){
+    header("Location:  ../user/userspace.html");
+    exit();
+}else{
+    echo "Error: " .$stmt->error;
+}
+*/
 echo json_encode($response);
-exit;
+exit();
 ?>

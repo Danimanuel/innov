@@ -12,7 +12,7 @@ $stmt = $conn->prepare ( "INSERT INTO addinfo (id_usuario, curso, area_estudo, p
 $stmt->bind_param("issss", $id_usuario, $curso, $camp, $want, $level);
 
 if($stmt->execute()){
-    header("Location: ../index.html");
+    header("Location: ../user/userSpace.html");
     exit();
 } else {
     echo "Error: " . $stmt->error;
