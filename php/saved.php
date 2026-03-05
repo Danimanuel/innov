@@ -61,7 +61,7 @@ if ($result->num_rows > 0) {
     if (!$stmt) {
         $response["mensagem"] = "Erro no prepare (insert): " . $conn->error;
         echo json_encode($response);
-        exit;
+        exit;A
     }
 
     $stmt->bind_param("sssss", $nome, $email, $date_birth_day, $genero, $palavra_passe);
@@ -70,6 +70,7 @@ if ($result->num_rows > 0) {
         $response['sucesso'] = true;
         $response['id_usuario'] = $stmt->insert_id;
         $response['mensagem'] = "Cadastro realizado com sucesso!";
+        
     } else {
         $response['mensagem'] = "Erro ao cadastrar: " . $stmt->error;
     }

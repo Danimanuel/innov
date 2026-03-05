@@ -1,5 +1,5 @@
 <?php
-header('Content-Type: application/json');
+/*header('Content-Type: application/json');*/
 include "conection.php";
 
 $response = ["sucesso" => false, "mensagem" => "", "id_usuario" => 0];
@@ -36,23 +36,25 @@ if($result->num_rows === 0){
         $response['sucesso'] = true;
         $response['mensagem'] = "Login realizado com sucesso!";
         $response['id_usuario'] = $row['id_usuario'];
-
+        echo json_encode($response);
+        
         // Opcional: iniciar sessão
         session_start();
         $_SESSION['id_usuario'] = $row['id_usuario'];
         $_SESSION['email'] = $email;
+      
+     
     } else {
         $response['mensagem'] = "Senha incorreta!";
     }
 }
 
-/*if($stmt->execute()){
-    header("Location:  ../user/userspace.html");
-    exit();
-}else{
-    echo "Error: " .$stmt->error;
+if(!$stmt->execute()){
+    header("Location: ../user/userSpace.html");
+    
+} else {
+    echo "Error: " . $stmt->error;
 }
-*/
-echo json_encode($response);
+
 exit();
 ?>
